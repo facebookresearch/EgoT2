@@ -1,0 +1,47 @@
+DATA:
+  VIDEO_DIR_PATH: /datasets01/ego4d_track2/v1/full_scale
+  ANN_DIR: ../data/fho/annotations/
+  CLIPS_SAVE_PATH: ../data/fho/pos_clips
+  NO_SC_PATH: ../data/fho/neg_clips
+  SAMPLING_FPS: 2
+  CLIP_LEN_SEC: 8
+  CROP_SIZE: 225
+  TASK: "keyframe_localization_2loader"
+TRAIN:
+  TRAIN_ENABLE: True
+  DATASET: PNRDatasetwithAuxTask
+  BATCH_SIZE: 32
+TEST:
+  ENABLE: False
+  BATCH_SIZE: 32
+  DATASET: PNRDatasetwithAuxTask
+DATA_LOADER:
+  NUM_WORKERS: 10
+  PIN_MEMORY: True
+  SHUFFLE: True
+  IS_NO_STATE_CHANGE: False
+MISC:
+  FAST_DEV_RUN: False
+  NUM_GPUS: 2
+  OUTPUT_DIR: ./logs/pnr
+  LOG_DIR: '3tasktranslation'
+MODEL:
+  MODEL_NAME: TaskFusionMFTransformer3TaskDropout
+  LOSS_FUNC: "bce"
+  LOSS_REDUCTION: "mean"
+  FEAT_DROPOUT_RATE: 0.5
+  TRANSLATION_INPUT_FEATURES: 128
+  TRANSLATION_LAYERS: 6
+SOLVER:
+  BASE_LR: 0.0001
+  MAX_EPOCH: 40
+  OPTIMIZING_METHOD: "adamw"
+  LR_POLICY: "constant"
+  ACCELERATOR: "dp"
+PRETRAIN:
+  PNR_CFG: "./configs/eval/pnr.yaml"
+  PNR_FT: True
+  OSCC_CFG: "./configs/eval/oscc.yaml"
+  OSCC_FT: True
+  ACTION_CFG: "./configs/eval/recognition.yaml"
+  ACTION_FT: True

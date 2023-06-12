@@ -1,0 +1,44 @@
+DATA:
+  VIDEO_DIR_PATH: /datasets01/ego4d_track2/v1/full_scale
+  ANN_DIR: ../data/fho/annotations/
+  CLIPS_SAVE_PATH: ../data/fho/pos_clips
+  NO_SC_PATH: ../data/fho/neg_clips
+  SAMPLING_FPS: 2
+  CLIP_LEN_SEC: 8
+  CROP_SIZE: 225
+  TASK: "state_change_classification_2loader"
+TRAIN:
+  TRAIN_ENABLE: False
+  DATASET: PNRDatasetwithAuxTask
+  BATCH_SIZE: 32
+TEST:
+  ENABLE: True
+  BATCH_SIZE: 32
+  DATASET: PNRDatasetwithAuxTask
+DATA_LOADER:
+  NUM_WORKERS: 0
+  PIN_MEMORY: True
+  SHUFFLE: True
+  IS_NO_STATE_CHANGE: True
+MISC:
+  FAST_DEV_RUN: False
+  NUM_GPUS: 1
+  OUTPUT_DIR: ./logs/oscc
+  LOG_DIR: '3tasktranslation'
+  CHECKPOINT_FILE_PATH: "../egot2_checkpoints/oscc/egot2s_3task_256_l5_dp0.1_epoch=7-step=5127.ckpt"
+MODEL:
+  MODEL_NAME: TaskFusionMFTransformer3TaskDropout
+  FEAT_DROPOUT_RATE: 0.1
+  TRANSLATION_INPUT_FEATURES: 256
+  TRANSLATION_LAYERS: 5
+SOLVER:
+  BASE_LR: 0.0001
+  MAX_EPOCH: 20
+  OPTIMIZING_METHOD: "adamw"
+PRETRAIN:
+  PNR_CFG: "./configs/eval/pnr.yaml"
+  PNR_FT: True
+  OSCC_CFG: "./configs/eval/oscc.yaml"
+  OSCC_FT: True
+  ACTION_CFG: "./configs/eval/recognition.yaml"
+  ACTION_FT: True

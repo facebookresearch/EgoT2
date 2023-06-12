@@ -1,0 +1,39 @@
+DATA:
+  VIDEO_DIR_PATH: /datasets01/ego4d_track2/v1/full_scale
+  ANN_DIR: ../data/fho/annotations/
+  CLIPS_SAVE_PATH: ../data/fho/pos_clips
+  NO_SC_PATH: ../data/fho/neg_clips
+  SAMPLING_FPS: 2
+  CLIP_LEN_SEC: 8
+  CROP_SIZE: 225
+  TASK: "state_change_classification"
+TRAIN:
+  TRAIN_ENABLE: True
+  DATASET: StateChangeDetectionAndKeyframeLocalisation
+  BATCH_SIZE: 16
+TEST:
+  ENABLE: False
+  BATCH_SIZE: 32
+  DATASET: StateChangeDetectionAndKeyframeLocalisation
+DATA_LOADER:
+  NUM_WORKERS: 10
+  PIN_MEMORY: True
+  SHUFFLE: True
+  IS_NO_STATE_CHANGE: True
+  DROP_LAST: True
+MISC:
+  FAST_DEV_RUN: False
+  NUM_GPUS: 2
+  OUTPUT_DIR: ./logs/oscc
+  LOG_DIR: 'state_change_classification_adamw'
+MODEL:
+  ARCH: "slow_layer5"
+  NUM_CLASSES: [1]
+  NUM_STATE_CLASSES: [2]
+  MODEL_NAME: StateChangeClsResNet
+  STATE_CHANGE_ACT: "none"
+SOLVER:
+  BASE_LR: 0.0001
+  MAX_EPOCH: 10
+  OPTIMIZING_METHOD: "adamw"
+
